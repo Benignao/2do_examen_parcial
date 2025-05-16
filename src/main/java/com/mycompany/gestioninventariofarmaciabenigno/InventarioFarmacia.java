@@ -1,11 +1,13 @@
 package com.mycompany.gestioninventariofarmaciabenigno;
 
 import javax.swing.JOptionPane;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class InventarioFarmacia {
     private ProductoDTO[] productos = new ProductoDTO[100]; // Vector estático
     private int contadorProductos = 0; // Control de productos registrados
-
     // Agrega un nuevo producto si hay espacio
     public void agregarProducto(ProductoDTO producto) {
         if (contadorProductos < productos.length) {
@@ -72,6 +74,26 @@ public class InventarioFarmacia {
         }
     }
     
+    
+        public void guardarInventarioEnArchivo(String nombreArchivo) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(nombreArchivo))) {
+            for (ProductoDTO producto : this.productos) {
+                writer.write(productos); // Escribe cada producto en una nueva línea
+                writer.newLine();        // Agrega una nueva línea
+            }
+            System.out.println("Inventario guardado en " + nombreArchivo);
+        } catch (IOException e) {
+            System.err.println("Error al guardar el inventario: " + e.getMessage());
+        }}
+
+/*No se encontró ningún método adecuado para write(ProductoDTO).
+El método Writer.write(char[]) no es aplicable.
+(Discordancia de argumentos; ProductoDTO no se puede convertir a char[]).
+El método Writer.write(String) no es aplicable.
+(Discordancia de argumentos; ProductoDTO no se puede convertir a String).
+El método BufferedWriter.write(int) no es aplicable.
+(Discordancia de argumentos; ProductoDTO no se puede convertir a int).*/
+    
     public ProductoDTO[] getProductos() {
     return productos;
 }
@@ -94,6 +116,7 @@ public boolean eliminarProducto(String codigo) {
     }
     return false;
 }
+
 
 }
 
